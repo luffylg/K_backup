@@ -10,13 +10,23 @@ def filter(target):
     pattern3=re.compile(r'\(.+')
     target=re.sub(pattern2,'',target)
     target = re.sub(pattern3, '', target)
-    return target
+    target += " "
+    target = re.sub(r"[iI][Nn][tT]'{0,1}[Ll]\.{0,1}\s", 'International ', target)
+    target = re.sub(r"[Cc][Oo][Nn][Ff]\.{0,1}\s", 'Conference ', target)
+    target = re.sub(r"[Ss][Yy][Mm][Pp]\.{0,1}\s", 'Symposium ', target)
+    target = target.strip().replace('Int抣', 'International ')
+    # if target.endswith('Conf'):
+    #     target.replace('Conf','Conference')
+    # if target.endswith('Symp'):
+    #     target.replace('Symp','Symposium')
+    target.replace('Conf/','Conference/')
+    return target.strip()
 
 def get_alpha(s):
-    return ''.join([a for a in s if a.isalpha()])
+    return ''.join([a.lower() for a in s if a.isalpha()])
 
 def get_alpha2(s):
-    return ''.join(re.findall(r'[a-zA-Z]',s))
+    return ''.join(re.findall(r'[a-zA-Z]',s)).lower()
 
 def clear_repeat():
     journal=readexcel('total.xlsx',0)
